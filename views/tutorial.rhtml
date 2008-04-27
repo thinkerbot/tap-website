@@ -1,0 +1,27 @@
+<%= render :partial => 'page_header' %>
+
+<!-- content -->
+<div id="content" class="clear_children center_div">
+<div id="content_main" class="pc cc_tallest main_div">
+<div id="<%= "content_" + @simple_site.path %>" class="section">
+<%= redcloth @simple_site.content %>
+</div>
+
+<% 
+categories = @tutorials.collect {|t| t.category }.uniq.sort 
+categories.each do |category|-%>
+<ul>
+<h2><%= category %></h2>
+<%@tutorials.select {|t| t.category == category }.each do |tutorial|-%>
+<li><a href='<%= site "tutorial/#{tutorial.path}.html" %>'><%= tutorial.title.empty? ? tutorial.path : tutorial.title %></a></li>
+<% end -%>
+</ul>
+<% end -%>
+
+</div><!-- content_main -->
+
+<div id="content_sub" class="sc sub_div">
+<%= render :partial => 'links' %>
+</div><!-- content_sub -->
+
+</div><!-- content -->

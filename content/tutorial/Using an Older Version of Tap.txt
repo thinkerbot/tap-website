@@ -1,0 +1,28 @@
+Rubygems makes it very easy to use an older version of tap:
+<pre><code>
+  % tap _version_ ...
+</pre></code>
+
+As you can see, all you have to do is specify the version in the first argument.  This trick can also be useful for fixing the version of tap used if it gets called from another process.
+<pre><code>
+  % tap _0.9.0_
+	usage: tap <command> {options} [args]
+
+	examples:
+	  tap generate root .                  # generates a root dir
+	  tap run taskname --option input      # runs the 'taskname' task
+
+	help:
+	  tap help                             # prints this help
+	  tap command --help                   # prints help for 'command'
+
+
+	available commands:
+	  console
+	  destroy
+	  generate
+	  help
+	  run
+
+	version 0.9.0 -- http://tap.rubyforge.org
+</pre></code>

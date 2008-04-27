@@ -1,0 +1,72 @@
+h1. Tap (<ins>T</ins>ask <ins>Ap</ins>plication)
+
+Tap is a framework for creating configurable, distributable, file-based tasks and workflows.  Kind of like "Rake":http://rake.rubyforge.org/, kind of like "Rails":http://www.rubyonrails.org/, but geared towards command-line applications.
+
+h2. Features
+
+The achitecture of Tap allows any method to be linked into a workflow.  On top of this basic substructure, Tap builds the Task class which allows:
+
+* easy configuration
+* batch and multithread execution
+* command-line interaction
+
+In addition, Tap provides (or makes use of) framework niceties like:
+
+* easy logging and documentation
+* dependencies loading
+* generators
+* testing libraries
+
+Tap is designed so that task and workflow libraries can be distributed as gems.
+
+h2. A quick look
+
+You can define task classes:
+
+<pre><code># == Description
+# Your basic hello world task.
+# === Usage
+#   % tap run greet NAME
+#
+class Hello < Tap::Task
+  config :greeting, 'hello'           # a greeting string
+  
+  def process(name)
+    log greeting, name
+    name
+  end
+end
+</code></pre>
+
+These are immediately available in the command line...
+  
+  % tap run -- hello Bob
+  ctl-c interupts execution
+  beginning run...
+    I[14:43:38]              hello Cecily
+
+... configurable ...
+
+  % tap run -- hello James Cecily --iterate --greeting=hola
+  ctl-c interupts execution
+  beginning run...
+    I[14:43:40]              hola James
+    I[14:43:40]              hola Cecily
+
+... documented ...
+
+  % tap run -- hello --help
+  Hello
+
+  Your basic hello world task.
+  Usage:
+    % tap run greet NAME
+
+  Options:
+    --greeting                          a greeting string ('hello')
+    --help                              Print this help.
+    --debug                             Trace execution and debug
+    --use                               Loads inputs from file.
+    --iterate                           Iterates over inputs.
+
+and ready to be used in scripts, developed from the console, joined into workflows, or used as-is to get work done.

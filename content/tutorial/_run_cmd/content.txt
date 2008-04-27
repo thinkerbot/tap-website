@@ -1,0 +1,174 @@
+h1. The Run Command
+
+The easiest way to run tasks is using the 'tap run' command.  Run gives access to tasks that Tap::App can map to a task class.  Basically, that means you can run any task in your lib directory by providing the class name either as a path or a constant.  
+
+Create a tap root and a couple tasks (in a new folder):
+
+  % tap generate root .
+  % tap generate task run_task --no-test
+  % tap generate task another/run_task --no-test
+  
+Your directory structure should be like:
+
+<pre><code>root
+|- Rakefile
+|- ReadMe.txt
+|- lib
+|   |- another
+|   |   `- run_task.rb
+|   `- run_task.rb
+|- tap.yml
+`- test
+    |- another
+    |   `- run_task_test.rb
+    |- run_task_test.rb
+    |- tap_test_helper.rb
+    `- tap_test_suite.rb
+</code></pre>
+
+The basic syntax to run these tasks is:
+
+  % tap run run_task
+  % tap run another/run_task
+  
+or
+
+  % tap run SampleTask
+  % tap run Another::SampleTask
+
+Arguments are provided to the task as inputs.
+
+  % tap run run_task one
+  ctl-c interupts execution
+  beginning run...
+    I[17:27:16]        run_task one was processed with value
+    
+h2. Options and Configurations
+
+Options can be specified for both the run command and for the task.  The run options are parsed up to the first double-dash '--', and the remaining options are parsed for the task.  Hence:
+
+<pre><code>% tap run --help
+% tap run --help run_task
+% tap run run_task --help
+</code></pre>
+
+All print the help for run, whereas:
+
+<pre><code>% tap run -- run_task --help
+% tap run -- --help run_task
+</code></pre>
+
+Prints the help for run_task.  By default task configurations are available as options through run; you can set a configuration using '--config_name=':
+
+<pre><code>% tap run -- run_task one --key='another value'
+ctl-c interupts execution
+beginning run...
+  I[17:27:16]        run_task one was processed with another value'
+</code></pre>
+
+Notice the 'key' configuration was set to 'another value''.
+
+h2. Rake Tasks
+
+Run is aware of Rake.  Rake tasks can be run through tap using 'rake' as a task name:
+
+<pre><code>% tap run rake test
+% tap run -- rake -T
+</code></pre>
+
+Moreover, if run comes across a task name that can't be mapped to a Tap task, then it automatically assumes it must be a rake task.  Hence you can use:
+
+<pre><code>% tap run test
+% tap run -- -T
+</code></pre>
+
+However, the --help option is always specific to Tap tasks so you can't get the rake help to print with:
+
+<pre><code>% tap run -- rake --help</code></pre>
+
+h2. Multiple Tasks
+
+Multiple tasks can be specified using double-dashes.  All inputs and options up to the next double-dash go to the task. 
+
+<pre><code>% tap run -- run_task one --key=value -- another/run_task two --key='another value'
+ctl-c interupts execution
+beginning run...
+  I[17:37:42]           run_task one was processed with value
+  I[17:37:42]   another/run_task two was processed with another value
+</code></pre>
+
+h2. Rounds
+
+Multiple rounds of tasks can be enqued using dashes and pluses.  The tasks in a round are enqued and run before the tasks in the next round are enqued and run.  First an example:
+
+<pre><code>% tap run -- run_task --+ another/run_task</code></pre>
+
+The rounds break down like:
+
+  Round 0:  run_task
+  Round 1:  another/run_task
+
+First run_task is enqued and run to completion (along with any tasks enqued by run_task) before another/run_task is enqued and run.  This can be really useful to run several tasks and then dump the results somewhere, in this case to the command line:
+
+<pre><code>% tap run -- run_task one -- run_task two -- another/run_task three --+ tap/dump</code></pre>
+
+The rounds break down like:
+
+  Round 0: [run_task one, run_task two, another/run_task]
+  Round 1: tap/dump
+  
+And the output will be something like this (don't be thrown by the shuffled task order in the audit; by that time they're hashed and you can see by logging that they ran in the correct order):
+
+<pre><code>ctl-c interupts execution
+beginning run...
+  I[17:40:25]           run_task one was processed with value
+  I[17:40:25]           run_task two was processed with value
+  I[17:40:25]   another/run_task three was processed with value
+# audit:
+# o-[] "three"
+# o-[another/run_task] "three was processed with value"
+#
+# o-[] "one"
+# o-[run_task] "one was processed with value"
+#
+# o-[] "two"
+# o-[run_task] "two was processed with value"
+#
+# date: 2008-04-07 17:40:25
+---
+run_task (23378530):
+- two was processed with value
+run_task (23381320):
+- one was processed with value
+another/run_task (23364070):
+- three was processed with value
+</code></pre>
+
+Additional rounds can be specified with additional plusses, and tasks in a round can be specified in any order, although to keep option parsing working ok, you still need to lead with a double-dash:
+
+<pre><code>% tap run -- --++ run_task one -- run_task two --++ another/run_task three -- tap/dump</code></pre>
+
+The rounds are:
+
+  Round 0: run_task two
+  Round 1: tap/dump
+  Round 2: [run_task one, another/run_task]
+
+And now you can see the dump runs before round 2:
+
+<pre><code>ctl-c interupts execution
+beginning run...
+  I[17:48:45]           run_task two was processed with value
+# audit:
+# o-[] "two"
+# o-[run_task] "two was processed with value"
+#
+# date: 2008-04-07 17:48:45
+---
+run_task (23381300):
+- two was processed with value
+  I[17:48:45]           run_task one was processed with value
+  I[17:48:45]   another/run_task three was processed with value
+</pre></code>
+
+

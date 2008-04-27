@@ -1,0 +1,6 @@
+directories:
+  simple_site: ../tap/simple_site/lib
+  ddb: ../tap/ddb/lib
+  output: public
+  
+load_paths: [simple_site, ddb]

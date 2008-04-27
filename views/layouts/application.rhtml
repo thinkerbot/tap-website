@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="<%= site %>stylesheets/layout.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="<%= site %>stylesheets/typography.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="<%= site %>stylesheets/colors.css" media="screen" rel="stylesheet" type="text/css" />
+<title><%= @title %></title>
+</head>
+
+<body>
+
+<%= yield :layout %>
+
+<!-- site information -->
+<div id="site_info">
+<p>Copyright &copy; 2006-2007 Regents of the University of Colorado.</p>
+<p><a href="http://bahuvrihi.wordpress.com/about/" title="About Me!">Simon Chiang</a>, <a href="http://biomol.uchsc.edu/">Biomolecular Structure Program</a>, <a href="http://hsc-proteomics.uchsc.edu/hansenlab/">Hansen Lab</a></p>
+<p>CU Denver School of Medicine Deans Academic Enrichment Fund</p>
+</div>
+<!-- site info -->
+<script type="text/javascript" src="si-clear-children.js"></script>
+</body>
+</html>

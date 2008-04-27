@@ -1,0 +1,31 @@
+<!-- branding -->
+<div id="branding_main">
+<div id="branding_text">
+You have workflows in mind.  Put them on <span id="branding_tap">Tap</span></div>
+<img id="branding_img" src="<%= site %>images/branding.jpg" alt="Tap" />
+</div>
+<!-- branding -->
+
+<!-- navigation -->
+<div id="nav_main" class="center_div">
+<ul id="nav_site">
+<%= render :partial => 'links/site_nav' %>
+</ul>
+</div>
+<!-- nav_main -->
+
+<!-- content -->
+<div id="content" class="clear_children center_div">
+
+<div id="content_main" class="pc cc_tallest main_div">
+<div id="content_index" class="section">
+<%= redcloth @simple_site.content %>
+</div>
+</div><!-- content_main -->
+
+<div id="content_sub" class="sc sub_div">
+<%= render :partial => 'links' %>
+</div><!-- content_sub -->
+
+</div>
+<!-- content -->
