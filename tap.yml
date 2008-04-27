@@ -1,6 +1,8 @@
 directories:
-  simple_site: ../tap/simple_site/lib
-  ddb: ../tap/ddb/lib
-  output: public
-  
+  output: pkg
+ 
+absolute_paths:
+  simple_site: /Users/simonchiang/Documents/Gems/tap/tap/simple_site/lib
+  ddb: /Users/simonchiang/Documents/Gems/tap/tap/ddb/lib
+
 load_paths: [simple_site, ddb]

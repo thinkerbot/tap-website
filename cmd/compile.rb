@@ -21,9 +21,7 @@ app = Tap::App.instance
 #
 
 opts = [
-  ['--rdoc', '-r', GetoptLong::NO_ARGUMENT, "Regenerate rdoc"],
-  ['--help', '-h', GetoptLong::NO_ARGUMENT, "Print this help."],
-  ['--debug', nil, GetoptLong::NO_ARGUMENT, "Specifies debug mode."]]
+  ['--help', '-h', GetoptLong::NO_ARGUMENT, "Print this help."]]
 
 rdoc = false
 Tap::Support::CommandLine.handle_options(*opts) do |opt, value| 
@@ -32,33 +30,23 @@ Tap::Support::CommandLine.handle_options(*opts) do |opt, value|
     puts Tap::Support::CommandLine.command_help(__FILE__, opts)
     exit
     
-  when '--debug'
-    app.options.debug = true
-    
-  when '--rdoc'
-    rdoc = true
   end
 end
 
-app.indir("..") do 
-  env.rake_setup
-  
-  app.task('rdoc').enq 
-  app.run
-end if rdoc
 
 # setup copy task
 require 'fileutils'
-copy_task = Tap::FileTask.new do |task|
-  rdoc_src = File.dirname(__FILE__) + "/../../rdoc"
-  rdoc_target = File.dirname(__FILE__) + "/../public/rdoc"
+copy_task = Tap::FileTask.new do |task, subdir|
+  src = app.filepath('content', subdir)
+  target = app.filepath('pkg', subdir)
 
-  task.log :copy, 'rdoc'
-  task.prepare(rdoc_target)
-  FileUtils.cp_r(rdoc_src, rdoc_target)
+  task.log :copy, subdir
+  task.prepare(target)
+  FileUtils.cp_r(src, target)
 end
 
 # enque tasks and run
 app.task('simple_site/compile').enq
-copy_task.enq
+copy_task.enq('images')
+copy_task.enq('stylesheets')
 app.run
