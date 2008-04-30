@@ -2,6 +2,10 @@ h1. Tap (<ins>T</ins>ask <ins>Ap</ins>plication)
 
 Tap is a framework for creating configurable, distributable, file-based tasks and workflows.  Kind of like "Rake":http://rake.rubyforge.org/, kind of like "Rails":http://www.rubyonrails.org/, but geared towards command-line applications.
 
+* "Rubyforge":http://rubyforge.org/projects/tap
+* "Lighthouse":http://bahuvrihi.lighthouseapp.com/projects/9908-tap-task-application/overview
+* "Github":http://github.com/bahuvrihi/tap/tree/master
+
 h2. Features
 
 The achitecture of Tap allows any method to be linked into a workflow.  On top of this basic substructure, Tap builds the Task class which allows:

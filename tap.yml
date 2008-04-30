@@ -2,7 +2,7 @@ directories:
   output: pkg
  
 absolute_paths:
-  simple_site: /Users/simonchiang/Documents/Gems/tap/tap/simple_site/lib
-  ddb: /Users/simonchiang/Documents/Gems/tap/tap/ddb/lib
+  simple_site: /Users/simonchiang/Documents/Gems/simple_site/lib
+  ddb: /Users/simonchiang/Documents/Gems/ddb/lib
 
 load_paths: [simple_site, ddb]

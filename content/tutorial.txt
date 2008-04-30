@@ -1,3 +1,3 @@
 h1. Tutorials
 
-The basic tutorial for Tap is located *"HERE":<%= site %>rdoc/files/Tutorial.html* in the "code documentation":<%= site %>rdoc/index.html.  Overviews of other, more specific topics are listed below.  
+The basic tutorial for Tap is located *"HERE":http://tap.rubyforge.org/rdoc/files/Tutorial.html* in the "code documentation":http://tap.rubyforge.org/rdoc/index.html.  Overviews of other, more specific topics are listed below.  
